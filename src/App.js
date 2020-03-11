@@ -4,13 +4,15 @@ import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import Control from "./components/TaskControl";
 import _ from 'lodash';
+import { connect } from 'react-redux'
+import * as actions from './actions/index'
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       // tasks: [], // id unique, name, status
-      isDisplayForm: false,
+      // isDisplayForm: false,
       taskEditing: null,
       filter: {
         name: '',
@@ -62,7 +64,7 @@ class App extends Component {
   }
 
   onToggleForm = () => {
-    if (this.state.isDisplayForm && this.state.taskEditing !== null) {
+    /* if (this.state.isDisplayForm && this.state.taskEditing !== null) {
       this.setState({
         isDisplayForm: true,
         taskEditing: null
@@ -74,13 +76,8 @@ class App extends Component {
         taskEditing: null
       })
     }
-
-  }
-
-  onCloseForm = () => {
-    this.setState({
-      isDisplayForm: false
-    })
+ */
+    this.props.onToggleForm();
   }
 
   onShowForm = () => {
@@ -88,27 +85,8 @@ class App extends Component {
       isDisplayForm: true
     })
   }
-  
-  onSubmit = (data) => {
-    var { tasks } = this.state;
-    if (data.id === '') {
-      data.id = this.generateID();
-      tasks.push(data);
-    }
-    else {
-      var index = this.findIndex(data.id);
-      tasks[index] = data;
-    }
 
-    this.setState({
-      tasks: tasks,
-      taskEditing: null
-    })
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-
-  }
-
-  onUpdateStatus = (id) => {
+/*   onUpdateStatus = (id) => {
     var { tasks } = this.state;
     //var index = this.findIndex(id);
 
@@ -124,7 +102,7 @@ class App extends Component {
       });
       localStorage.setItem('tasks', JSON.stringify(tasks))
     }
-  }
+  } */
 
   onDelete = (id) => {
     var { tasks } = this.state;
@@ -189,57 +167,15 @@ class App extends Component {
 
   render() {
     var { //tasks,
-      isDisplayForm, taskEditing, filter, keyword, sortBy, sortValue } = this.state; // var tasks =this.state.tasks
-    /* if (filter) {
-      if (filter.name) {
-        tasks = tasks.filter((task) => {
-          return task.name.toLowerCase().indexOf(filter.name) !== -1;
-        });
-      }
+      // isDisplayForm,
+      taskEditing, filter, keyword, sortBy, sortValue } = this.state; // var tasks =this.state.tasks
 
-      // old
-      tasks = tasks.filter((task) => {
-        if (filter.status === -1) {
-          //console.log(filter.status);
-          return task;
-        }
-        else {
-          //console.log(filter.status);
-          return task.status === (filter.status === 1 ? true : false)
-        }
-      });
+    var { isDisplayForm } = this.props;
 
-      // lodash
-
-      tasks= _.filter(tasks,(task)=>{
-        return task.name.toLowerCase().indexOf(keyword.toLocaleLowerCase()) !==-1;
-      })
-      if (keyword) {
-        tasks = tasks.filter((task) => {
-          return task.name.toLowerCase().indexOf(keyword) !== -1;
-        });
-      }
-    } */
-
-    var elmTaskForm = isDisplayForm ? <TaskForm onSubmit={this.onSubmit}
-      onCloseForm={this.onCloseForm}
+    var elmTaskForm = isDisplayForm ? <TaskForm
       task={taskEditing}
     /> : '';
 
-    /*  if (sortBy === 'name') {
-       tasks.sort((a, b) => {
-         if (a.name > b.name) return sortValue;
-         else if (a.name < b.name) return sortValue;
-         else return 0;
-       })
-     }
-     else {
-       tasks.sort((a, b) => {
-         if (a.status > b.status) return -sortValue;
-         else if (a.status < b.status) return sortValue;
-         else return 0;
-       })
-     } */
 
     return (
       <div className="container">
@@ -272,4 +208,17 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = state => {
+  return {
+    isDisplayForm: state.isDisplayForm
+  };
+}
+
+const mapDispathToProps = (dispatch, props) => {
+  return {
+    onToggleForm: () => {
+      dispatch(actions.toggleForm())
+    }
+  };
+}
+export default connect(mapStateToProps, mapDispathToProps)(App)

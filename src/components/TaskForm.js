@@ -41,35 +41,7 @@ class TaskForm extends Component {
       })
     }
   }
-
-  /* static getDerivedStateFromProps (nextProps){
-    if ( nextProps && nextProps.task){
-    console.log(nextProps.task)
-      return { 
-       task:nextProps.task
-      };
-      
-    }
-    else
-    {
-      return null;
-    } 
-  }
-
-  componentDidUpdate(nextProps,prevState){
-    console.log(nextProps.task.id)
-    //console.log(prevState.id)
-    if( nextProps.task.id!==prevState.id && nextProps && nextProps.task){
-      this.setState({
-        id: nextProps.task.id,
-        name: nextProps.task.name,
-        status: nextProps.task.status
-      }) //,()=>{console.log(this.state)}
-
-    }
-    
-  } */
-
+  
   onCloseForm = () => {
     this.props.onCloseForm();
   }
@@ -143,6 +115,12 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     onAddTask: (task) => {
       dispatch(actions.addTask(task))
+    },
+    onOpenForm: () => {
+      dispatch(actions.openForm())
+    },
+    onCloseForm: () => {
+      dispatch(actions.closeForm())
     }
   }
 };

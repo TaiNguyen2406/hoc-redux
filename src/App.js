@@ -64,19 +64,6 @@ class App extends Component {
   }
 
   onToggleForm = () => {
-    /* if (this.state.isDisplayForm && this.state.taskEditing !== null) {
-      this.setState({
-        isDisplayForm: true,
-        taskEditing: null
-      })
-    }
-    else {
-      this.setState({
-        isDisplayForm: !this.state.isDisplayForm,
-        taskEditing: null
-      })
-    }
- */
     this.props.onToggleForm();
   }
 
@@ -85,37 +72,7 @@ class App extends Component {
       isDisplayForm: true
     })
   }
-
-/*   onUpdateStatus = (id) => {
-    var { tasks } = this.state;
-    //var index = this.findIndex(id);
-
-    //lodash
-    var index = _.findIndex(tasks, (task) => {
-      return task.id === id
-    })
-    //console.log(index)
-    if (index !== -1) {
-      tasks[index].status = !tasks[index].status;
-      this.setState({
-        tasks: tasks
-      });
-      localStorage.setItem('tasks', JSON.stringify(tasks))
-    }
-  } */
-
-  onDelete = (id) => {
-    var { tasks } = this.state;
-    var index = this.findIndex(id);
-    if (index !== -1) {
-      tasks.splice(index, 1);
-      this.setState({
-        tasks: tasks
-      });
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      this.onCloseForm();
-    }
-  }
+ 
 
   onUpdate = (id) => {
     var { tasks } = this.state;
@@ -197,9 +154,8 @@ class App extends Component {
               Generate data
             </button>
             <Control onSearch={this.onSearch} onSort={this.onSort} sortBy={this.state.sortBy} sortValue={this.state.sortValue} />
-            <TaskList //tasks={tasks} 
-              onUpdateStatus={this.onUpdateStatus}
-              onDelete={this.onDelete} onUpdate={this.onUpdate}
+            <TaskList //tasks={tasks}  
+              onUpdate={this.onUpdate}
               onFilter={this.onFilter} />
           </div>
         </div>

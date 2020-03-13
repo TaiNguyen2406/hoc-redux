@@ -34,6 +34,13 @@ export const closeForm = () => {
 export const updateStatus = (id) => {
     return {
         type: types.UPDATE_STATUS_TASK,
+        id // id:id
+    }
+}
+
+export const deleteTask = (id) => {
+    return {
+        type: types.DELETE_TASK,
         id
     }
 }

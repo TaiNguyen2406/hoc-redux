@@ -14,23 +14,26 @@ class TaskForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.task) {
+    if (this.props.itemEditing && this.props.itemEditing.id!== null) {
       this.setState({
-        id: this.props.task.id,
-        name: this.props.task.name,
-        status: this.props.task.status
+        id: this.props.itemEditing.id,
+        name: this.props.itemEditing.name,
+        status: this.props.itemEditing.status
       })//,()=>{console.log(this.state)})
       //console.log(this.state)
+    }
+    else{
+      this.onClear();
     }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log(this.state)
-    if (nextProps && nextProps.task) {
+    //console.log(nextProps)
+    if (nextProps && nextProps.itemEditing) {
       this.setState({
-        id: nextProps.task.id,
-        name: nextProps.task.name,
-        status: nextProps.task.status
+        id: nextProps.itemEditing.id,
+        name: nextProps.itemEditing.name,
+        status: nextProps.itemEditing.status
       })//,()=>{console.log(this.state)})
     }
     else if (!nextProps.task) {
@@ -58,7 +61,8 @@ class TaskForm extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     // this.props.onSubmit(this.state);
-    this.props.onAddTask(this.state);
+    //this.props.onAddTask(this.state);
+    this.props.onSaveTask(this.state);
     this.onClear();
     this.onCloseForm();
   }
@@ -71,7 +75,9 @@ class TaskForm extends Component {
   }
 
   render() {
+    
     var { id } = this.state;
+    if(!this.props.isDisplayForm) return ''
     return (
       <div className="panel panel-warning">
         <div className="panel-heading">
@@ -107,7 +113,8 @@ class TaskForm extends Component {
 
 const mapStateToProps = state => {
   return {
-
+    isDisplayForm: state.isDisplayForm,
+    itemEditing: state.itemEditing
   };
 };
 
@@ -116,11 +123,17 @@ const mapDispatchToProps = (dispatch, props) => {
     onAddTask: (task) => {
       dispatch(actions.addTask(task))
     },
+    onSaveTask: (task) => {
+      dispatch(actions.saveTask(task))
+    },
     onOpenForm: () => {
       dispatch(actions.openForm())
     },
     onCloseForm: () => {
       dispatch(actions.closeForm())
+    },
+    onToggleForm: () => {
+      dispatch(actions.toggleForm())
     }
   }
 };

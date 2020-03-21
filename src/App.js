@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
-import Control from "./components/TaskControl";
+import TaskControl from "./components/TaskControl";
 import { connect } from 'react-redux'
 import * as actions from './actions/index'
 
@@ -127,7 +127,7 @@ class App extends Component {
               onClick={this.onGenerateData}>
               Generate data
             </button>
-            <Control onSearch={this.onSearch} onSort={this.onSort} sortBy={this.state.sortBy} sortValue={this.state.sortValue} />
+            <TaskControl />
             <TaskList    />
           </div>
         </div>
